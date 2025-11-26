@@ -1,0 +1,25 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button class="download_button" onclick="window.location.href='/download'">Download Submissions</button>
+    <div id="container">
+        <div id="button_1" class="button unclicked_button" onclick="toggle('button_1')">Click Me!</div>
+        <div id="button_2" class="button unclicked_button" onclick="toggle('button_2')">Click Me!</div>
+        <div id="button_3" class="button unclicked_button" onclick="toggle('button_3')">Click Me!</div>
+    </div>
+    <div class="submit_button" onclick="submitAction('button_1', 'button_2', 'button_3')">Submit</div>
+    <div id="status_text"></div>
+
+
+    <!-- Link to your JavaScript file -->
+    <script src="script.js"></script>
+
+</body>
+</html>

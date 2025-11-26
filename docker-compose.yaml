@@ -1,0 +1,7 @@
+services:
+  site:
+    build: .
+    volumes: 
+      - ./:/code
+    ports:
+      - "5833:5000"
