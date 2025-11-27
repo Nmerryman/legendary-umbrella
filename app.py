@@ -24,7 +24,7 @@ def style():
 def submit():
     data = request.get_json()
     print(data)
-    expected_keys = ['timestamp', 'button_1', 'button_2', 'button_3']
+    expected_keys = ['timestamp', 'button_0', 'type_1', 'option_2']
     need_header = os.path.exists("submissions.csv")
     with open("submissions.csv", "a") as f:
         writer = csv.writer(f)
