@@ -1,20 +1,10 @@
-.clicked_button {
-    background-color: green;
-    color: white;
-}
-
-
-.unclicked_button {
-    background-color: red;
-    color: black;
-}
 
 #container {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .reset_area{
@@ -26,11 +16,17 @@
 
 #money_text {
     margin-right: 20px;
+    font-size: x-large;
 }
 
 .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-grow: 1;
-    height: 50px;
+    background-color: red;
+    color: black;
+    height: 30vh;
     line-height: 50px;
     text-align: center;
     margin: 10px;
@@ -38,7 +34,7 @@
     user-select: none;
     border-radius: 5px;
     font-family: Arial, sans-serif;
-    font-size: 16px;
+    font-size: x-large;
 }
 
 #submit_button {
@@ -48,8 +44,7 @@
 
 #reset_button {
     background-color: orange;
-    color: white;
- 
+    height: 20vh;
 }
 
 .fill_wide {
