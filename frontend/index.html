@@ -10,30 +10,40 @@
 <body>
 
     <button class="download_button" onclick="window.location.href='/download'">Download Submissions</button>
-    <div class="reset_area">
-        <div id="reset_button" class="button fill_wide" onclick="resetCounts()">Reset counts</div>
-        $
-        <div id="money_text">1234</div>
+    <div id="main_body">
+        <div id="clickable_area">
+            <div class="reset_area">
+                <div id="reset_button" class="button fill_wide" onclick="resetCounts()">Reset counts</div>
+                $
+                <div id="money_text">1234</div>
+            </div>
+            <div id="container">
+                <div class="fill_wide">
+                    <div id="button_0" class="button" onclick="toggle(0)">
+                        <div id="count_0" class="count_text">0</div>
+                    </div>
+                </div>
+                <div class="fill_wide">
+                    <div id="button_1" class="button" onclick="toggle(1)">
+                        <div id="count_1" class="count_text">0</div>
+                    </div>
+                </div>
+                <div class="fill_wide">
+                    <div id="button_2" class="button fill_wide" onclick="toggle(2)">
+                        <div id="count_2" class="count_text">0</div>
+                    </div>
+                </div>
+                <div class="fill_wide">
+                    <div id="button_3" class="button fill_wide" onclick="toggle(3)">
+                        <div id="count_3" class="count_text">0</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fill_wide button" id="submit_button" onclick="submitAction()">Submit</div>
+        </div>
+        <div id="response_text"></div>
     </div>
-    <div id="container">
-        <div class="fill_wide">
-            <div id="button_0" class="button" onclick="toggle(0)">
-                <div id="count_0" class="count_text">0</div>
-            </div>
-        </div>
-        <div class="fill_wide">
-            <div id="button_1" class="button" onclick="toggle(1)">
-                <div id="count_1" class="count_text">0</div>
-            </div>
-        </div>
-        <div class="fill_wide">
-            <div id="button_2" class="button fill_wide" onclick="toggle(2)">
-                <div id="count_2" class="count_text">0</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="fill_wide button" id="submit_button" onclick="submitAction()">Submit</div>
     <div id="status_text"></div>
 
 

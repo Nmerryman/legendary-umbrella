@@ -1,7 +1,7 @@
-var numButtons = 3;
-var buttonNames = ['button_0', 'type_1', 'option_2'];
-var niceNames = ['Thing 1', 'Thing 2', 'Thing 3'];
-var prices = [5, 10, 15];
+var numButtons = 4;
+var buttonNames = ['R1_6', 'R1_9', 'R2_6', 'R2_9'];
+var niceNames = ['R1 6 Card', 'R1 9 Card', 'R2 6 Card', 'R2 9 Card'];
+var prices = [10, 14, 10, 14];
 var counts = {};
 
 resetCounts();
@@ -58,8 +58,9 @@ function submitAction() {
         },
         body: JSON.stringify(counts),
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(result => {
+        updateGlobalStats(result);
         console.log('Success:', result);
     })
     .catch(error => {
@@ -74,4 +75,30 @@ function submitAction() {
 
     resetCounts();
 }
+
+function updateGlobalStats(data) {
+    let r16 = data['R1_6'];
+    let r19 = data['R1_9'];
+    let r26 = data['R2_6'];
+    let r29 = data['R2_9'];
+
+    let responseText = 'Todays Stats:\n';
+    // buttonNames.forEach((name, index) => {
+    //     responseText += niceNames[index] + ': ' + data[name] + " * " + prices[index] + " = " + (data[name] * prices[index]) + '\n';
+    // });
+    responseText += `R1 6 Card: ${r16} * $${prices[0]} = $${r16 * prices[0]}\n`;
+    responseText += `R1 9 Card: ${r19} * $${prices[1]} = $${r19 * prices[1]}\n`;
+    responseText += ' = $' + (r16 * prices[0] + r19 * prices[1]) + '\n';
+    responseText += '---------------------\n';
+    
+    responseText += `R2 6 Card: ${r26} * $${prices[2]} = $${r26 * prices[2]}\n`;
+    responseText += `R2 9 Card: ${r29} * $${prices[3]} = $${r29 * prices[3]}\n`;
+    responseText += ' = $' + (r26 * prices[2] + r29 * prices[3]) + '\n';
+    responseText += '---------------------\n';
+    let total = (r16 * prices[0]) + (r19 * prices[1]) + (r26 * prices[2]) + (r29 * prices[3]);
+    responseText += `Total: $${total}`;
+    const responseElement = document.getElementById('response_text');
+    responseElement.innerText = responseText;
+}
+
 
