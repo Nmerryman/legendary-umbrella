@@ -1,26 +1,22 @@
 
-#main_body {
+body {
+    overflow: hidden;
+}
+
+.main_body {
     display: flex;
 }
+
 
 #container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 20px;
-    margin-top: 20px;
+    align-items: end;
 }
 
-.reset_area{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-}
-
-#money_text {
-    margin-right: 20px;
-    font-size: x-large;
+.money_style {
+    font-size: xxx-large;
+    transform: translateX(1vw);
 }
 
 .button {
@@ -31,18 +27,26 @@
     background-color: red;
     color: black;
     height: 30vh;
-    line-height: 50px;
+    line-height: 6vh;
     text-align: center;
-    margin: 10px;
+    margin: 1vh;
     cursor: pointer;
     user-select: none;
-    border-radius: 5px;
+    border-radius: 1vw;
     font-family: Arial, sans-serif;
-    font-size: x-large;
+    font-size: xx-large;
+}
+
+.r1_button {
+    background-color: rgb(255, 168, 181);
+}
+
+.r2_button {
+    background-color: rgb(162, 162, 162);
 }
 
 #submit_button {
-    background-color: blue;
+    background-color: green;
     color: white;
 }
 
@@ -58,11 +62,10 @@
 #clickable_area {
     display: flex;
     flex-direction: column;
-    width: 80vw;
+    width: 100vw;
 }
 
-#response_text {
-    margin-top: 90px;
+.stat_style {
+    transform: translateX(1vw);
+    font-size: x-large;
 }
-
-

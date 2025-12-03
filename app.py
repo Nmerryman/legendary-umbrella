@@ -1,4 +1,4 @@
-from flask import Flask, send_file, request
+from flask import Flask, send_file, request, redirect
 import csv
 import os
 import json
@@ -32,14 +32,16 @@ def stats():
     Use tree order
     """
     stat_data = {key: 0 for key in key_names}
+    try:
+        with open("submissions.csv", "r") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                for key in key_names:
+                    stat_data[key] += int(row.get(key, 0))
 
-    with open("submissions.csv", "r") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            for key in key_names:
-                stat_data[key] += int(row.get(key, 0))
-
-    return json.dumps(stat_data)
+        return json.dumps(stat_data)
+    except FileNotFoundError:
+        return json.dumps(stat_data)
 
 
 
@@ -62,3 +64,15 @@ def submit():
 @app.route('/download')
 def download():
     return send_file('submissions.csv', as_attachment=True)
+
+
+@app.route('/delete')
+def delete():
+    if os.path.exists("submissions.csv"):
+        os.remove("submissions.csv")
+    return redirect('/')
+
+
+@app.route('/stats')
+def get_stats():
+    return stats()
