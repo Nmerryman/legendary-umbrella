@@ -6,6 +6,10 @@ body {
 .main_body {
     display: flex;
 }
+.control_buttons {
+    display: flex;
+    flex-direction: row-reverse;
+}
 
 
 #container {

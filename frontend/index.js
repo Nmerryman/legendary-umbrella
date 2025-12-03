@@ -95,15 +95,15 @@ function updateGlobalStats(data) {
     let r26 = data['R2_6'];
     let r29 = data['R2_9'];
 
-    let responseText = "";
-    responseText += `R1 6 Card: ${r16} * $${prices[0]} = $${r16 * prices[0]}\n`;
-    responseText += `R1 9 Card: ${r19} * $${prices[1]} = $${r19 * prices[1]}\n`;
+    let responseText = "Round 1 Stats:\n";
+    responseText += `6 Card: ${r16} * $${prices[0]} = $${r16 * prices[0]}\n`;
+    responseText += `9 Card: ${r19} * $${prices[1]} = $${r19 * prices[1]}\n`;
     responseText += ' = $' + (r16 * prices[0] + r19 * prices[1]) + '\n\n';
     document.getElementById("R1_stats").innerText = responseText
 
-    responseText = "";
-    responseText += `R2 6 Card: ${r26} * $${prices[2]} = $${r26 * prices[2]}\n`;
-    responseText += `R2 9 Card: ${r29} * $${prices[3]} = $${r29 * prices[3]}\n`;
+    responseText = "Round 2 Stats:\n";
+    responseText += `6 Card: ${r26} * $${prices[2]} = $${r26 * prices[2]}\n`;
+    responseText += `9 Card: ${r29} * $${prices[3]} = $${r29 * prices[3]}\n`;
     responseText += ' = $' + (r26 * prices[2] + r29 * prices[3]) + '\n';
 
     let total = (r16 * prices[0]) + (r19 * prices[1]) + (r26 * prices[2]) + (r29 * prices[3]);
@@ -115,6 +115,11 @@ function toggle_hidden_buttons() {
     let button_div = document.getElementById("extra_control_buttons");
     if (button_div.hasAttribute("hidden")) {
         button_div.removeAttribute("hidden");
+        setTimeout(() => {
+            if (!button_div.hasAttribute("hidden")) {
+                button_div.setAttribute("hidden", true);
+            }
+        }, 30000);
     } else {
         button_div.setAttribute("hidden", true);
     }
