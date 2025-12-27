@@ -124,3 +124,15 @@ function toggle_hidden_buttons() {
         button_div.setAttribute("hidden", true);
     }
 }
+
+
+function reset_submissions() {
+    const names = ["timestamp", ...buttonNames];
+    fetch("/file_reset", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(names),
+    })
+}

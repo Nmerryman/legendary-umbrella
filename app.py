@@ -5,6 +5,7 @@ import json
 
 app = Flask(__name__, static_folder='static')
 
+data_file_name = "submissions.csv"
 
 
 @app.route('/')
@@ -20,7 +21,14 @@ def script():
 def style():
     return send_file('frontend/index.css')
 
-key_names = ['R1_6', 'R1_9', 'R2_6', 'R2_9']
+
+def get_column_names():
+    if not os.path.exists(data_file_name):
+        return None
+    with open(data_file_name, "r") as f:
+        reader = csv.DictReader(f)
+        return reader.fieldnames
+
 
 def stats():
     """
@@ -31,48 +39,54 @@ def stats():
 
     Use tree order
     """
-    stat_data = {key: 0 for key in key_names}
+    stat_data = {}
+    for key_name in get_column_names():
+        if key_name != "timestamp":
+            stat_data[key_name] = 0
     try:
-        with open("submissions.csv", "r") as f:
+        print(stat_data)
+        with open(data_file_name, "r") as f:
             reader = csv.DictReader(f)
+            next(reader)
             for row in reader:
-                for key in key_names:
+                for key in stat_data.keys():
+                    print(row, key)
                     stat_data[key] += int(row.get(key, 0))
-
         return json.dumps(stat_data)
     except FileNotFoundError:
         return json.dumps(stat_data)
 
 
-
 @app.route('/submit', methods=['POST'])
 def submit():
     data = request.get_json()
-    print(data)
-    expected_keys = ['timestamp'] + key_names
-    need_header = os.path.exists("submissions.csv")
-    with open("submissions.csv", "a") as f:
-        writer = csv.writer(f)
-        if not need_header:
-            writer.writerow(expected_keys)
-        
-        writer.writerow([data.get(key, '') for key in expected_keys])
-
+    print("data:", data)
+    with open(data_file_name, "a") as f:
+        writer = csv.DictWriter(f, get_column_names())
+        writer.writerow(data)
     return stats()
 
 
 @app.route('/download')
 def download():
-    return send_file('submissions.csv', as_attachment=True)
-
-
-@app.route('/delete')
-def delete():
-    if os.path.exists("submissions.csv"):
-        os.remove("submissions.csv")
-    return redirect('/')
+    return send_file(data_file_name, as_attachment=True)
 
 
 @app.route('/stats')
 def get_stats():
     return stats()
+
+@app.route('/file_reset', methods=["POST"])
+def ensure_log_ready():
+    """
+    This should be called only when wiping the file. It also sets up the columns for everything.
+    """
+    if os.path.exists(data_file_name):
+        os.remove(data_file_name)
+    data = request.get_json()
+    with open(data_file_name, "w") as f:
+        writer = csv.DictWriter(f, data)
+        writer.writeheader()
+    return "ok"
+        
+
