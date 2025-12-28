@@ -1,16 +1,151 @@
-var numButtons = 4;
-var buttonNames = ['R1_6', 'R1_9', 'R2_6', 'R2_9'];
-var niceNames = ['Round 1\n6 Card', 'Round 1\n9 Card', 'Round 2\n6 Card', 'Round 2\n9 Card'];
-var prices = [10, 14, 10, 14];
+var numButtons = 4;     // Remove this later
+var buttonNames = ['r16', 'r19', 'r26', 'r29'];
+var buttonText = {'r16': 'Round 1\n6 Card', 
+    'r19': 'Round 1\n9 Card', 
+    'r26': 'Round 2\n6 Card', 
+    'r29': 'Round 2\n9 Card'};
+
+var prices = {'r16': 10, 'r19': 14, 'r26': 10, 'r29': 14};
 var counts = {};
+var mode = "normal";
 
 resetCounts();
-renderCounts();
-fetchStats();
+setMode("normal");
 
-buttonNames.forEach(name => {
-    counts[name] = 0;
-});
+
+function setMode(name) {
+    mode = name;
+    const main_body = document.getElementById("main_body");
+    main_body.className = "main_body_" + name;
+    buildSite();
+    renderCounts();
+    fetchStats();
+}
+
+function buildSite() {
+    const gridContainer = document.getElementById("main_body"); 
+    gridContainer.innerHTML = "";
+
+    // reset button
+    if (mode == "normal" || mode == "negative") {
+        const temp = document.createElement("div");
+        temp.className = "button reset_button";
+        temp.style = "grid-area: reset;"
+        temp.onclick = resetCounts;
+        temp.innerText = "Reset Cart";
+        gridContainer.append(temp);
+    }
+
+    // default round buttons
+    if (mode == "normal") {
+        let temp = document.createElement("div");
+        temp.id = "counter_r16";
+        temp.className = "button r1_button";
+        temp.style = "grid-area: r16;";
+        temp.onclick = () => {increment("r16")};
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "counter_r19";
+        temp.className = "button r1_button";
+        temp.style = "grid-area: r19;";
+        temp.onclick = () => {increment("r19")};
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "counter_r26";
+        temp.className = "button r2_button";
+        temp.style = "grid-area: r26;";
+        temp.onclick = () => {increment("r26")};
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "counter_r29";
+        temp.className = "button r2_button";
+        temp.style = "grid-area: r29;";
+        temp.onclick = () => {increment("r29")};
+        gridContainer.append(temp);
+
+    }
+
+    // negative mode round buttons
+    if (mode == "negative") {
+        let temp = document.createElement("div");
+        temp.id = "counter_r16";
+        temp.className = "button r1_button";
+        temp.style = "grid-area: r16;";
+        temp.onclick = () => {decrement("r16")};
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "counter_r19";
+        temp.className = "button r1_button";
+        temp.style = "grid-area: r19;";
+        temp.onclick = () => {decrement("r19")};
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "counter_r26";
+        temp.className = "button r2_button";
+        temp.style = "grid-area: r26;";
+        temp.onclick = () => {decrement("r26")};
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "counter_r29";
+        temp.className = "button r2_button";
+        temp.style = "grid-area: r29;";
+        temp.onclick = () => {decrement("r29")};
+        gridContainer.append(temp);
+
+    }
+
+    // Total money in cart text field
+    if (mode == "normal" || mode == "negative") {
+        let temp = document.createElement("div");
+        temp.className = "money_style";
+        temp.style = "grid-area: total;";
+        temp.innerHTML = `
+            <div style="font-size: xx-large;">
+                In cart:<br/>
+            </div>
+            $
+        `
+        let total_money_element = document.createElement("span");
+        total_money_element.id = "money_total_text";
+        total_money_element.innerText = "1234";
+        temp.append(total_money_element);
+
+        gridContainer.append(temp);
+    }
+
+    // Round stat counter fields
+    if (mode == "normal" || mode == "negative") {
+        let temp = document.createElement("div");
+        temp.id = "r1stat";
+        temp.className = "stat_style";
+        temp.style = "grid-area: r1stat;";
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "r2stat";
+        temp.className = "stat_style";
+        temp.style = "grid-area: r2stat;";
+        gridContainer.append(temp);
+    }
+
+    // Pay button
+    if (mode == "normal" || mode == "negative") {
+        let temp = document.createElement("div");
+        temp.id = "checkout";
+        temp.className = "button submit_button";
+        temp.style = "grid-area: checkout;";
+        temp.onclick = submitAction;
+        temp.innerText = "Checkout"
+        gridContainer.append(temp);
+    }
+
+}
 
 function getButtonId(index) {
     return 'button_' + index;
@@ -20,11 +155,15 @@ function getCountId(index) {
     return 'count_' + index;
 }
 
-function toggle(id) {
-    counts[buttonNames[id]] += 1;
+function increment(name) {
+    counts[name] += 1;
     renderCounts();
 }
 
+function decrement(name) {
+    counts[name] -= 1;
+    renderCounts();
+}
 
 function resetCounts() {
     buttonNames.forEach(name => {
@@ -36,16 +175,19 @@ function resetCounts() {
 
 function renderCounts() {
     let sum = 0;
-    for (let i = 0; i < numButtons; i++) {
-        const buttonCount = counts[buttonNames[i]];
-        const countElement = document.getElementById(getCountId(i));
-        const buttonName = niceNames[i];
-        countElement.innerText = buttonName + ": " + buttonCount;
-        sum += buttonCount * prices[i];
+    for (let name of buttonNames) {
+        const buttonCount = counts[name];
+        const buttonElement = document.getElementById("counter_" + name);
+        if (buttonElement) {    // Skip ones that don't exist
+            buttonElement.innerText = buttonText[name] + ": " + buttonCount;
+            sum += buttonCount * prices[name];
+        }
     }
 
-    const totalElement = document.getElementById('money_text');
-    totalElement.innerText = sum;
+    const totalElement = document.getElementById('money_total_text');
+    if (totalElement) {
+        totalElement.innerText = sum;
+    }
 }
 
 
@@ -68,12 +210,6 @@ function submitAction() {
         console.error('Error:', error);
     });
 
-    // const statusText = document.getElementById('status_text');
-    // statusText.innerText = 'Submitted!';
-    // setTimeout(() => {
-    //     statusText.innerText = '';
-    // }, 2000);
-
     resetCounts();
 }
 
@@ -90,25 +226,32 @@ function fetchStats() {
 }
 
 function updateGlobalStats(data) {
-    let r16 = data['R1_6'];
-    let r19 = data['R1_9'];
-    let r26 = data['R2_6'];
-    let r29 = data['R2_9'];
+    let r16 = data['r16'];
+    let r19 = data['r19'];
+    let r26 = data['r26'];
+    let r29 = data['r29'];
 
-    let responseText = "Round 1 Stats:\n";
-    responseText += `6 Card: ${r16} * $${prices[0]} = $${r16 * prices[0]}\n`;
-    responseText += `9 Card: ${r19} * $${prices[1]} = $${r19 * prices[1]}\n`;
-    responseText += ' = $' + (r16 * prices[0] + r19 * prices[1]) + '\n\n';
-    document.getElementById("R1_stats").innerText = responseText
+    const r1_stat = document.getElementById("r1stat");
+    if (r1_stat) {
+        let responseText = "Round 1 Stats:\n";
+        responseText += `6 Card: ${r16} * $${prices['r16']} = $${r16 * prices['r16']}\n`;
+        responseText += `9 Card: ${r19} * $${prices['r19']} = $${r19 * prices['r19']}\n`;
+        responseText += ' = $' + (r16 * prices['r16'] + r19 * prices['r19']) + '\n\n';
+        r1_stat.innerText = responseText
+    }
 
-    responseText = "Round 2 Stats:\n";
-    responseText += `6 Card: ${r26} * $${prices[2]} = $${r26 * prices[2]}\n`;
-    responseText += `9 Card: ${r29} * $${prices[3]} = $${r29 * prices[3]}\n`;
-    responseText += ' = $' + (r26 * prices[2] + r29 * prices[3]) + '\n';
 
-    let total = (r16 * prices[0]) + (r19 * prices[1]) + (r26 * prices[2]) + (r29 * prices[3]);
-    responseText += `Grand Total: $${total}`;
-    document.getElementById("R2_stats").innerText = responseText
+    const r2_stat = document.getElementById("r2stat");
+    if (r2_stat) {
+        responseText = "Round 2 Stats:\n";
+        responseText += `6 Card: ${r26} * $${prices['r26']} = $${r26 * prices['r26']}\n`;
+        responseText += `9 Card: ${r29} * $${prices['r29']} = $${r29 * prices['r29']}\n`;
+        responseText += ' = $' + (r26 * prices['r26'] + r29 * prices['r29']) + '\n';
+    
+        let total = (r16 * prices['r16']) + (r19 * prices['r19']) + (r26 * prices['r26']) + (r29 * prices['r29']);
+        responseText += `Grand Total: $${total}`;
+        r2_stat.innerText = responseText
+    }
 }
 
 function toggle_hidden_buttons() {
@@ -126,6 +269,15 @@ function toggle_hidden_buttons() {
 }
 
 
+function toggle_mode() {
+    if (mode == "normal") {
+        setMode("negative");
+    } else {
+        setMode("normal");
+    }
+}
+
+
 function reset_submissions() {
     const names = ["timestamp", ...buttonNames];
     fetch("/file_reset", {
@@ -134,5 +286,13 @@ function reset_submissions() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(names),
+    })  
+    .then(response => response.json())
+    .then(result => {
+        updateGlobalStats(result);
     })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
 }

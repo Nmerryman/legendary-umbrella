@@ -47,13 +47,13 @@ def stats():
         print(stat_data)
         with open(data_file_name, "r") as f:
             reader = csv.DictReader(f)
-            next(reader)
+            # next(reader)
             for row in reader:
                 for key in stat_data.keys():
                     print(row, key)
                     stat_data[key] += int(row.get(key, 0))
         return json.dumps(stat_data)
-    except FileNotFoundError:
+    except (FileNotFoundError, StopIteration):
         return json.dumps(stat_data)
 
 
@@ -87,6 +87,6 @@ def ensure_log_ready():
     with open(data_file_name, "w") as f:
         writer = csv.DictWriter(f, data)
         writer.writeheader()
-    return "ok"
+    return stats()
         
 

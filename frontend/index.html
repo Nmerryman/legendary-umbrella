@@ -11,48 +11,56 @@
     <div class="control_buttons">
         <button onclick="toggle_hidden_buttons()">Toogle control buttons</button>
         <div id="extra_control_buttons" hidden>
+            <button onclick="toggle_mode()">Toggle Negative Mode</button>
             <button onclick="window.location.href='/download'">Download Submissions</button>
             <button onclick="reset_submissions()">Reset Submissions File</button>
         </div>
 
     </div>
-    <div class="main_body">
-        <div id="clickable_area">
-            <div id="container">
-                <div class="fill_wide">
-                    <div id="reset_button" class="button fill_wide" onclick="resetCounts()">Reset cart</div>
-                    <div id="button_0" class="button r1_button" onclick="toggle(0)">
-                        <div id="count_0" class="count_text">0</div>
-                    </div>
-                </div>
-                <div class="fill_wide">
-                    <div class="money_style">
-                        <div style="font-size: xx-large;">
-                            In cart:<br/>
-                        </div>
-                        $
-                        <span id="money_text">1234</span>
-                    </div>
-                    <div id="button_1" class="button r1_button" onclick="toggle(1)">
-                        <div id="count_1" class="count_text">0</div>
-                    </div>
-                </div>
-                <div class="fill_wide">
-                    <div id="R1_stats" class="stat_style"></div>
-                    <div id="button_2" class="button fill_wide r2_button" onclick="toggle(2)">
-                        <div id="count_2" class="count_text">0</div>
-                    </div>
-                </div>
-                <div class="fill_wide">
-                    <div id="R2_stats" class="stat_style"></div>
-                    <div id="button_3" class="button fill_wide r2_button" onclick="toggle(3)">
-                        <div id="count_3" class="count_text">0</div>
-                    </div>
+    <div id="main_body">
+        <!-- <div style="grid-area: r16;">
+            6
+        </div>
+        <div style="grid-area: r29;">
+            6
+        </div>
+        <div>
+            6
+        </div> -->
+        <!-- <div id="container">
+            <div class="fill_wide">
+                <div id="reset_button" class="button fill_wide" onclick="resetCounts()">Reset cart</div>
+                <div id="button_0" class="button r1_button" onclick="toggle(0)">
+                    <div id="count_0" class="count_text">0</div>
                 </div>
             </div>
-            
-            <div class="fill_wide button" id="submit_button" onclick="submitAction()">Paid</div>
+            <div class="fill_wide">
+                <div class="money_style">
+                    <div style="font-size: xx-large;">
+                        In cart:<br/>
+                    </div>
+                    $
+                    <span id="money_text">1234</span>
+                </div>
+                <div id="button_1" class="button r1_button" onclick="toggle(1)">
+                    <div id="count_1" class="count_text">0</div>
+                </div>
+            </div>
+            <div class="fill_wide">
+                <div id="R1_stats" class="stat_style"></div>
+                <div id="button_2" class="button fill_wide r2_button" onclick="toggle(2)">
+                    <div id="count_2" class="count_text">0</div>
+                </div>
+            </div>
+            <div class="fill_wide">
+                <div id="R2_stats" class="stat_style"></div>
+                <div id="button_3" class="button fill_wide r2_button" onclick="toggle(3)">
+                    <div id="count_3" class="count_text">0</div>
+                </div>
+            </div>
         </div>
+        
+        <div class="fill_wide button" id="submit_button" onclick="submitAction()">Paid</div> -->
     </div>
     <div id="status_text"></div>
 

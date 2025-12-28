@@ -3,14 +3,33 @@ body {
     overflow: hidden;
 }
 
-.main_body {
-    display: flex;
+.main_body_normal {
+    display: grid;
+    grid-template-areas: 
+    "r16 r19 r1stat reset"
+    "r26 r29 r2stat total"
+    "bo dob other_sales checkout"
+    ;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 }
+
+.main_body_negative {
+    display: grid;
+    grid-template-areas: 
+    "r16 r19 r1stat reset"
+    "r26 r29 r2stat total"
+    "checkout checkout checkout checkout"
+    ;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    background-color: #ce6e6e;
+}
+
 .control_buttons {
     display: flex;
     flex-direction: row-reverse;
 }
-
 
 #container {
     display: flex;
@@ -49,24 +68,18 @@ body {
     background-color: rgb(162, 162, 162);
 }
 
-#submit_button {
+.submit_button {
     background-color: green;
     color: white;
 }
 
-#reset_button {
+.reset_button {
     background-color: orange;
     height: 20vh;
 }
 
 .fill_wide {
     flex-grow: 1;
-}
-
-#clickable_area {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
 }
 
 .stat_style {
