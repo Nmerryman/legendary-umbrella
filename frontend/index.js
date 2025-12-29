@@ -1,11 +1,14 @@
 var numButtons = 4;     // Remove this later
-var buttonNames = ['r16', 'r19', 'r26', 'r29'];
+var buttonNames = ['r16', 'r19', 'r26', 'r29', 'blackout', 'dauber'];
 var buttonText = {'r16': 'Round 1\n6 Card', 
     'r19': 'Round 1\n9 Card', 
     'r26': 'Round 2\n6 Card', 
-    'r29': 'Round 2\n9 Card'};
+    'r29': 'Round 2\n9 Card',
+    'blackout': 'Blackout',
+    'dauber': 'Daubers'
+};
 
-var prices = {'r16': 10, 'r19': 14, 'r26': 10, 'r29': 14};
+var prices = {'r16': 10, 'r19': 14, 'r26': 10, 'r29': 14, 'blackout': 1, 'dauber': 2};
 var counts = {};
 var mode = "normal";
 
@@ -132,6 +135,12 @@ function buildSite() {
         temp.className = "stat_style";
         temp.style = "grid-area: r2stat;";
         gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "other_sales";
+        temp.className = "stat_style";
+        temp.style = "grid-area: other_sales;";
+        gridContainer.append(temp);
     }
 
     // Pay button
@@ -143,6 +152,39 @@ function buildSite() {
         temp.onclick = submitAction;
         temp.innerText = "Checkout"
         gridContainer.append(temp);
+    }
+
+    // Blackout & Dauber
+    if (mode == "normal") {
+        let temp = document.createElement("div");
+        temp.id = "counter_blackout";
+        temp.className = "button blackout_button";
+        temp.style = "grid-area: blackout;";
+        temp.onclick = () => {increment("blackout")};
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "counter_dauber";
+        temp.className = "button dauber_button";
+        temp.style = "grid-area: dauber;";
+        temp.onclick = () => {increment("dauber")};
+        gridContainer.append(temp);
+    }
+    if (mode == "negative") {
+        let temp = document.createElement("div");
+        temp.id = "counter_blackout";
+        temp.className = "button blackout_button";
+        temp.style = "grid-area: blackout;";
+        temp.onclick = () => {decrement("blackout")};
+        gridContainer.append(temp);
+
+        temp = document.createElement("div");
+        temp.id = "counter_dauber";
+        temp.className = "button dauber_button";
+        temp.style = "grid-area: dauber;";
+        temp.onclick = () => {decrement("dauber")};
+        gridContainer.append(temp);
+
     }
 
 }
@@ -232,8 +274,9 @@ function updateGlobalStats(data) {
     let r29 = data['r29'];
 
     const r1_stat = document.getElementById("r1stat");
+    let responseText = "";
     if (r1_stat) {
-        let responseText = "Round 1 Stats:\n";
+        responseText = "Round 1 Stats:\n";
         responseText += `6 Card: ${r16} * $${prices['r16']} = $${r16 * prices['r16']}\n`;
         responseText += `9 Card: ${r19} * $${prices['r19']} = $${r19 * prices['r19']}\n`;
         responseText += ' = $' + (r16 * prices['r16'] + r19 * prices['r19']) + '\n\n';
@@ -251,6 +294,13 @@ function updateGlobalStats(data) {
         let total = (r16 * prices['r16']) + (r19 * prices['r19']) + (r26 * prices['r26']) + (r29 * prices['r29']);
         responseText += `Grand Total: $${total}`;
         r2_stat.innerText = responseText
+    }
+    const other_sales = document.getElementById("other_sales");
+    if (other_sales) {
+        responseText = "Other sales:\n";
+        responseText += `Blackouts: ${data['blackout']} * $${prices['blackout']} = $${data['blackout'] * prices['blackout']}\n`
+        responseText += `Daubers: ${data['dauber']} * $${prices['dauber']} = $${data['dauber'] * prices['dauber']}\n`
+        other_sales.innerText = responseText;
     }
 }
 

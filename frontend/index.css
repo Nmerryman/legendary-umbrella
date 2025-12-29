@@ -8,7 +8,7 @@ body {
     grid-template-areas: 
     "r16 r19 r1stat reset"
     "r26 r29 r2stat total"
-    "bo dob other_sales checkout"
+    "blackout dauber other_sales checkout"
     ;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -19,7 +19,7 @@ body {
     grid-template-areas: 
     "r16 r19 r1stat reset"
     "r26 r29 r2stat total"
-    "checkout checkout checkout checkout"
+    "blackout dauber other_sales checkout"
     ;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -76,6 +76,14 @@ body {
 .reset_button {
     background-color: orange;
     height: 20vh;
+}
+
+.blackout_button {
+    background-color: lightblue;
+}
+
+.dauber_button {
+    background-color: lightblue;
 }
 
 .fill_wide {
